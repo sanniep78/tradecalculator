@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trade Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .section {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .calculator {
+            width: 100%;
+            height: 400px;
+        }
+        .google-sheet {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
+        @media (max-width: 768px) {
+            .section {
+                padding: 10px;
+            }
+        }
+
+        /* New styles for styled-table */
+        .styled-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .styled-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .styled-table tr:hover {
+            background-color: #ddd;
+        }
+        .styled-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sections">
+            <div class="section">
+                <h2>Position Calculator</h2>
+                <div id="position-size-calculator-84173">
+                    <script type="text/javascript" src="https://www.cashbackforex.com/Content/remote/remote-widgets.js"></script>
+                    <script type="text/javascript">
+                        RemoteCalc({
+                            "Url": "https://www.cashbackforex.com",
+                            "TopPaneStyle": "YmFja2dyb3VuZDogd2hpdGU7IGNvbG9yOiBibGFjazsgYm9yZGVyOiBzb2xpZCAxcHggYmxhY2s7IGJvcmRlci1ib3R0b206IG5vbmU7IA==",
+                            "BottomPaneStyle": "YmFja2dyb3VuZDogd2hpdGU7IGJvcmRlcjogc29saWQgMXB4IGJsYWNrOyBjb2xvcjogYmxhY2s7",
+                            "ButtonStyle": "YmFja2dyb3VuZDogYmxhY2s7IGNvbG9yOiB3aGl0ZTsgYm9yZGVyLXJhZGl1czogMjBweDs=",
+                            "TitleStyle": "dGV4dC1hbGlnbjogbGVmdDsgZm9udC1zaXplOiA0MHB4OyBmb250LXdlaWdodDogNTAwOw==",
+                            "TextboxStyle": "YmFja2dyb3VuZC1jb2xvcjogd2hpdGU7IGNvbG9yOiBibGFjazsgYm9yZGVyOiBzb2xpZCAxcHggI2FhYWFhYQ==",
+                            "ContainerWidth": "100%",
+                            "HighlightColor": "#ffff00",
+                            "IsDisplayTitle": false,
+                            "IsShowChartLinks": false,
+                            "IsShowEmbedButton": false,
+                            "CompactType": "large",
+                            "Calculator": "position-size-calculator",
+                            "ContainerId": "position-size-calculator-84173"
+                        });
+                    </script>
+                </div>
+            </div>
+
+            
+              <!-- Script -->
+              <script>
+                function calculateWinnings() {
+                  // Grab TP values
+                  const tp1 = parseFloat(document.getElementById("tp1").value) || 0;
+                  const tp2 = parseFloat(document.getElementById("tp2").value) || 0;
+                  const tp3 = parseFloat(document.getElementById("tp3").value) || 0;
+                  const tp4 = parseFloat(document.getElementById("tp4").value) || 0;
+            
+                  // Extract Lot Size and Pip Value from the Calculator using IDs
+                  const lotSize = parseFloat(document.getElementById("psc-lots").value) || 0;
+                  const exchangeRate = parseFloat(document.getElementById("psc-exchange-rate").value) || 0;
+                  const contractSize = parseFloat(document.getElementById("pscContractSize").value) || 0;
+            
+                  if (!lotSize || !exchangeRate || !contractSize) {
+                    alert("Please ensure all inputs are filled in correctly!");
+                    return;
+                  }
+            
+                  // Calculate Pip Value
+                  const pipValue = (0.0001 / exchangeRate) * contractSize * lotSize;
+            
+                  // Calculate potential winnings
+                  const winnings1 = pipValue * tp1;
+                  const winnings2 = pipValue * tp2;
+                  const winnings3 = pipValue * tp3;
+                  const winnings4 = pipValue * tp4;
+            
+                  // Display results
+                  const resultsDiv = document.getElementById("results");
+                  resultsDiv.innerHTML = `
+                    <p>Potential Winnings:</p>
+                    <ul>
+                      <li>Take Profit 1: €${winnings1.toFixed(2)}</li>
+                      <li>Take Profit 2: €${winnings2.toFixed(2)}</li>
+                      <li>Take Profit 3: €${winnings3.toFixed(2)}</li>
+                      <li>Take Profit 4: €${winnings4.toFixed(2)}</li>
+                    </ul>
+                  `;
+                }
+              </script>
+              
+
+            </div>                
+
+            <div class="section">
+                <h2>Symbol Data (Metatrader)</h2>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>Symbol Name on cTrader</th>
+                            <th>Contract Size</th>
+                            <th>Digit</th>
+                            <th>Base CCY</th>
+                            <th>Quote CCY</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>AUDCAD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>AUD</td>
+                            <td>CAD</td>
+                        </tr>
+                        <tr>
+                            <td>AUDCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>AUD</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>AUDJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>AUD</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>AUDNZD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>AUD</td>
+                            <td>NZD</td>
+                        </tr>
+                        <tr>
+                            <td>AUDUSD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>AUD</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>CADCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>CAD</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>CADJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>CAD</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>CHFJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>CHF</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>EURAUD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>AUD</td>
+                        </tr>
+                        <tr>
+                            <td>EURCAD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>CAD</td>
+                        </tr>
+                        <tr>
+                            <td>EURCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>EURGBP</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>GBP</td>
+                        </tr>
+                        <tr>
+                            <td>EURJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>EUR</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>EURNZD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>NZD</td>
+                        </tr>
+                        <tr>
+                            <td>EURUSD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>EUR</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>GBPAUD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>GBP</td>
+                            <td>AUD</td>
+                        </tr>
+                        <tr>
+                            <td>GBPCAD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>GBP</td>
+                            <td>CAD</td>
+                        </tr>
+                        <tr>
+                            <td>GBPCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>GBP</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>GBPJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>GBP</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>GBPNZD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>GBP</td>
+                            <td>NZD</td>
+                        </tr>
+                        <tr>
+                            <td>GBPUSD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>GBP</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>NZDCAD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>NZD</td>
+                            <td>CAD</td>
+                        </tr>
+                        <tr>
+                            <td>NZDCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>NZD</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>NZDJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>NZD</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>NZDUSD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>NZD</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>USDCAD</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>USD</td>
+                            <td>CAD</td>
+                        </tr>
+                        <tr>
+                            <td>USDCHF</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>USD</td>
+                            <td>CHF</td>
+                        </tr>
+                        <tr>
+                            <td>USDJPY</td>
+                            <td>100,000</td>
+                            <td>3</td>
+                            <td>USD</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>USDMXN</td>
+                            <td>100,000</td>
+                            <td>5</td>
+                            <td>USD</td>
+                            <td>MXN</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">Metals</th>
+                        </tr>
+                        <tr>
+                            <td>XAGUSD</td>
+                            <td>5,000</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>XAUUSD</td>
+                            <td>100</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">Indexes</th>
+                        </tr>
+                        <tr>                        
+                            <td>NAS100 / USTEC</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>                        
+                            <td>AUS200</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>AUD</td>
+                        </tr>
+                        <tr>
+                            <td>EUR50</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>EUR</td>
+                        </tr>
+                        <tr>
+                            <td>F40</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>EUR</td>
+                        </tr>
+                        <tr>
+                            <td>GER40</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>EUR</td>
+                        </tr>
+                        <tr>
+                            <td>JPN225</td>
+                            <td>1,000</td>
+                            <td>0</td>
+                            <td>-</td>
+                            <td>JPY</td>
+                        </tr>
+                        <tr>
+                            <td>USTEC</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>US500</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>UK100</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>GBP</td>
+                        </tr>
+                        <tr>
+                            <td>DJ30 / US30</td>
+                            <td>10</td>
+                            <td>1</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">Crypto</th>
+                        </tr>
+                        <tr>
+                            <td>BCHUSD</td>
+                            <td>10</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>BTCUSD</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>ETHUSD</td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>LTCUSD</td>
+                            <td>100</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>SOLUSD</td>
+                            <td>10</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>XRPUSD</td>
+                            <td>10,000</td>
+                            <td>2</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <th colspan="5">Commodities</th>
+                        </tr>
+                        <tr>
+                            <td>USOUSD</td>
+                            <td>1000</td>
+                            <td>3</td>
+                            <td>USO</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>WTiOIL</td>
+                            <td>100</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>BrentOIL</td>
+                            <td>100</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                        <tr>
+                            <td>XNGUSD</td>
+                            <td>1,000</td>
+                            <td>3</td>
+                            <td>-</td>
+                            <td>USD</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
